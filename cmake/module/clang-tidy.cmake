@@ -1,0 +1,35 @@
+if("${CLANG_TIDY_BIN}" STREQUAL "")
+    find_program(CLANG_TIDY_BIN clang-tidy-10 NAMES clang-tidy)
+else()
+    set(CLANG_TIDY_BIN ${CLANG_TIDY_BIN})
+endif()
+
+macro(target_run_clang_tidy)
+    if(CLANG_TIDY_BIN)
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_BIN} --format-style='file')
+        set(CMAKE_C_CLANG_TIDY ${CLANG_TIDY_BIN} --format-style='file')
+    else()
+        set(CMAKE_C_CLANG_TIDY "" CACHE STRING "" FORCE)
+        set(CMAKE_CXX_CLANG_TIDY "" CACHE STRING "" FORCE)
+    endif()
+endmacro()
+
+function(print_clang_tidy_version)
+    if("${CLANG_TIDY_BIN}" STREQUAL "CLANG_TIDY_BIN-NOTFOUND" OR "${CLANG_TIDY_BIN}" STREQUAL "")
+      message(STATUS "Clang-tidy not found")
+      return()
+    endif()
+    
+    message(STATUS "CLANG_TIDY_BIN: ${CLANG_TIDY_BIN}")
+    execute_process(COMMAND ${CLANG_TIDY_BIN} --version
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT_VARIABLE CLANG_TIDY_RESULT RESULT_VARIABLE ret)
+    if(NOT ret EQUAL "0")
+        message( FATAL_ERROR "execute_process '${CLANG_TIDY_BIN} --version: returned error: ${ret}")
+    endif()
+
+    STRING(REGEX MATCH "version ([0-9]+\\.[0-9]+\\.[0-9]+)" CLANG_TIDY_VERSION_LONG "${CLANG_TIDY_RESULT}")
+    STRING(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" CLANG_TIDY_VERSION "${CLANG_TIDY_VERSION_LONG}")
+    message(STATUS "CLANG_TIDY_VERSION: ${CLANG_TIDY_VERSION} ")
+    message(STATUS "One can set the CLANG_TIDY binary using: 'cmake -DCLANG_TIDY_BIN=/usr/bin/clang-tidy-10 ..'")
+endfunction()
