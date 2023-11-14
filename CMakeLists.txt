@@ -22,7 +22,7 @@ add_subdirectory(thirdparty)
 
 # Source folders
 add_subdirectory(src)
-add_subdirectory(example)
+add_subdirectory(example) 
 
 create_clang_format_targets()
 # Status messages

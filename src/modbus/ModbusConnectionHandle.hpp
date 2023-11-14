@@ -2,7 +2,7 @@
 #define MODBUS_TCP_MODBUSCONNECTIONHANDLE_HPP
 
 #include "modbus.h"
-
+#include <memory>
 namespace RH {
 
 class ModbusConnectionHandle {

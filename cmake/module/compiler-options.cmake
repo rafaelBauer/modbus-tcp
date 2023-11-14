@@ -20,7 +20,18 @@ function(set_default_compiler_options target)
 #        PRIVATE -Wswitch-enum
         PRIVATE -Wpedantic
         PRIVATE -pedantic-errors)
+  elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC" OR CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # Not possible to set "/MT" or "/MTd" for Visual Studio 15 2017 generator via MSVC_RUNTIME_LIBRARY
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/18390
+    # Override for now via add_compile_options
+    target_link_options(${target} 
+        PRIVATE "/MTd"
+    )
+    target_compile_options(${target} 
+        PRIVATE /EHsc
+    )
   else()
     message(WARNING "No compiler options found for the detected compiler")
   endif()
+
 endfunction()
