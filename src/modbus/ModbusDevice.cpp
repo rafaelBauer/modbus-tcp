@@ -44,7 +44,7 @@ int ModbusDevice::writeCoil(uint16_t address, std::vector<bool> &valueToWrite) n
   pImpl->connectionHandle->modbusHandle->modbus_set_slave_id(id);
 
   constexpr uint16_t MAX_WRITE_BUFFER_SIZE = 256; // This is here now just because of a hack..
-  const uint16_t numberOfValuesToWrite = valueToWrite.size();
+  const uint16_t numberOfValuesToWrite = static_cast<uint16_t>(valueToWrite.size());
   if(numberOfValuesToWrite > MAX_WRITE_BUFFER_SIZE) {
     return -1;
   }
@@ -67,7 +67,7 @@ int ModbusDevice::writeCoil(uint16_t address, std::vector<bool> &valueToWrite) n
 }
 int ModbusDevice::writeRegister(uint16_t address, std::vector<uint16_t> &valueToWrite) noexcept {
   pImpl->connectionHandle->modbusHandle->modbus_set_slave_id(id);
-  const uint16_t numberOfValuesToWrite = valueToWrite.size();
+  const uint16_t numberOfValuesToWrite =  static_cast<uint16_t>(valueToWrite.size());
   if(numberOfValuesToWrite <= 1) {
     return pImpl->connectionHandle->modbusHandle->modbus_write_register(address, valueToWrite.front());
   }

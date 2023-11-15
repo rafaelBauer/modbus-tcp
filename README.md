@@ -8,6 +8,7 @@ Pra compilar o projeto, voce precisa de:
 Compiladores suportados:
 
 - Clang-cl >= 11 (MSVC)
+- MSVC >= 19.31
 - AppleClang 14
 - GCC >= 10
 
