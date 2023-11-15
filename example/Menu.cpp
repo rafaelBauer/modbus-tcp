@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <sstream>
 
+Menu::Menu(std::string_view text, MenuDependency& dependency) : MenuItem(text, dependency) {}
+
 void Menu::go() {
   terminate = false;
   while (!terminate){

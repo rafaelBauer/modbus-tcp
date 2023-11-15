@@ -13,7 +13,8 @@
  */
 class Menu : public MenuItem {
 public:
-  Menu(std::string_view text, MenuDependency& dependency) : MenuItem(text, dependency){};
+  Menu() = delete;
+  Menu(std::string_view text, MenuDependency& dependency);
   ~Menu() override = default;
   void go() override;
 
